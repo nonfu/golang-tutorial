@@ -6,6 +6,14 @@ import (
 )
 
 func main() {
+	// 转义字符
+	results := "Search results for \"Golang\":\n" +
+"- Go\n" +
+"- Golang\n" +
+"- Golang Programming\n"
+	fmt.Printf("%s", results)
+
+	// 字符串切片
 	str := "hello, world"
 	str1 := str[:5]  // 获取索引5（不含）之前的子串
 	str2 := str[7:]  // 获取索引7（含）之后的子串
@@ -17,6 +25,7 @@ func main() {
 	str4 := str[:]
 	fmt.Println("str4:", str4)
 
+	// 字符编码
 	msg := "Hello, 世界"
 	n := len(msg)  //  获取到的是 msg 的字节长度
 	for i := 0; i < n; i++ {
@@ -25,6 +34,6 @@ func main() {
 	}
 
 	for i, ch := range msg {
-		fmt.Println(i, ch, reflect.TypeOf(ch))  // 通过 range 遍历，ch 类型是 rune
+		fmt.Println(i, string(ch), reflect.TypeOf(ch))  // 通过 range 遍历，ch 类型是 rune
 	}
 }
