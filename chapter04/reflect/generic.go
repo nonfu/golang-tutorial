@@ -24,6 +24,7 @@ func NewContainer(t reflect.Type, size int) *Container {
 func (c *Container) Put(val interface{})  error {
     // 通过反射对实际传递进来的元素类型进行运行时检查，
     // 如果与容器初始化时设置的元素类型不同，则返回错误信息
+    // c.s.Type() 对应的是切片类型，c.s.Type().Elem() 应的才是切片元素类型
     if reflect.ValueOf(val).Type() != c.s.Type().Elem() {
         return fmt.Errorf("put error: cannot put a %T into a slice of %s",
             val, c.s.Type().Elem())
@@ -36,6 +37,8 @@ func (c *Container) Put(val interface{})  error {
 // 从容器中读取元素，将返回结果赋值给 val，同样通过空接口指定元素类型
 func (c *Container) Get(val interface{}) error {
     // 还是通过反射对元素类型进行检查，如果不通过则返回错误信息
+    // Kind 与 Type 相比范围更大，表示类别，如指针，而 Type 则对应具体类型，如 *int
+    // 由于 val 是指针类型，所以需要通过 reflect.ValueOf(val).Elem() 获取指针指向的类型
     if reflect.ValueOf(val).Kind() != reflect.Ptr ||
         reflect.ValueOf(val).Elem().Type() != c.s.Type().Elem() {
         return fmt.Errorf("get error: needs *%s but got %T", c.s.Type().Elem(), val)
@@ -62,7 +65,7 @@ func main() {
 
     // 从容器读取元素，将返回结果初始化为 0
     num := 0
-    if err := c.Get(num); err != nil {
+    if err := c.Get(&num); err != nil {
         panic(err)
     }
 
