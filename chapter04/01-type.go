@@ -26,4 +26,8 @@ func main() {
 	var y Integer
 	x, y = 10, 15
 	fmt.Println(x.Equal(y))
+
+	var a Integer = 1
+	var m Math = &a
+	fmt.Println(m.Add(1))
 }
